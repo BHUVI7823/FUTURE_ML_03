@@ -1,14 +1,17 @@
-
 import streamlit as st
 from google.cloud import dialogflow_v2 as dialogflow
 import os
 import base64
+import json
 
-# Set path to service account key
+# Set GOOGLE_APPLICATION_CREDENTIALS using Streamlit Secrets
+service_account_info = st.secrets["gcp_service_account"]
+with open("service_account.json", "w") as f:
+    json.dump(service_account_info, f)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service_account.json"
 
 # Dialogflow setup
-DIALOGFLOW_PROJECT_ID = "customer-support-chatbot-nmaw"
+DIALOGFLOW_PROJECT_ID = service_account_info["project_id"]
 SESSION_ID = "current-user-id"
 
 # Detect intent
@@ -56,7 +59,6 @@ def set_background(image_path):
             text-shadow: 1px 1px 2px black;
         }}
 
-        /* Mobile Responsive */
         @media only screen and (max-width: 600px) {{
             .chat-bubble {{
                 font-size: 14px;
@@ -97,4 +99,3 @@ if submitted and user_input:
 for sender, msg in st.session_state.chat_history:
     css_class = "user-message" if sender == "You" else "bot-message"
     st.markdown(f'<div class="chat-bubble {css_class}"><strong>{sender}:</strong> {msg}</div>', unsafe_allow_html=True)
-
