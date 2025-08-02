@@ -2,19 +2,15 @@ import streamlit as st
 from google.cloud import dialogflow_v2 as dialogflow
 import os
 import base64
-import json
 
-# Set GOOGLE_APPLICATION_CREDENTIALS using Streamlit Secrets
-service_account_info = st.secrets["gcp_service_account"]
-with open("service_account.json", "w") as f:
-    json.dump(service_account_info, f)
+# Set Google Application Credentials (Service Account)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service_account.json"
 
 # Dialogflow setup
-DIALOGFLOW_PROJECT_ID = service_account_info["project_id"]
+DIALOGFLOW_PROJECT_ID = "customer-support-chatbot-nmaw"
 SESSION_ID = "current-user-id"
 
-# Detect intent
+# Function to detect intent
 def detect_intent_texts(project_id, session_id, text, language_code='en'):
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(project_id, session_id)
@@ -27,7 +23,7 @@ def detect_intent_texts(project_id, session_id, text, language_code='en'):
     )
     return response.query_result.fulfillment_text
 
-# Set background
+# Function to set background image
 def set_background(image_path):
     with open(image_path, "rb") as img:
         encoded = base64.b64encode(img.read()).decode()
@@ -40,7 +36,6 @@ def set_background(image_path):
             background-position: center;
             background-repeat: no-repeat;
         }}
-
         .chat-bubble {{
             background-color: rgba(255, 255, 255, 0.7);
             padding: 10px 15px;
@@ -58,7 +53,6 @@ def set_background(image_path):
             color: white;
             text-shadow: 1px 1px 2px black;
         }}
-
         @media only screen and (max-width: 600px) {{
             .chat-bubble {{
                 font-size: 14px;
@@ -73,29 +67,32 @@ def set_background(image_path):
         unsafe_allow_html=True
     )
 
-# Set responsive background
+# Apply background
 set_background("background.jpg")
 
 # Title
 st.markdown("<h1>🤖 Customer Support Chatbot</h1>", unsafe_allow_html=True)
 
-# Chat History
+# Chat history state
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# Chat Form with Send button
+# Chat input form
 with st.form(key="chat_form", clear_on_submit=True):
     user_input = st.text_input("Type your message:")
     submitted = st.form_submit_button("Send")
 
-# Handle response
+# Chat response
 if submitted and user_input:
     with st.spinner("Bot is typing..."):
-        response = detect_intent_texts(DIALOGFLOW_PROJECT_ID, SESSION_ID, user_input)
-        st.session_state.chat_history.append(("You", user_input))
-        st.session_state.chat_history.append(("Bot", response))
+        try:
+            response = detect_intent_texts(DIALOGFLOW_PROJECT_ID, SESSION_ID, user_input)
+            st.session_state.chat_history.append(("You", user_input))
+            st.session_state.chat_history.append(("Bot", response))
+        except Exception as e:
+            st.error(f"Error: {e}")
 
-# Display messages
+# Show chat history
 for sender, msg in st.session_state.chat_history:
     css_class = "user-message" if sender == "You" else "bot-message"
     st.markdown(f'<div class="chat-bubble {css_class}"><strong>{sender}:</strong> {msg}</div>', unsafe_allow_html=True)
