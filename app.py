@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import streamlit as st
 from google.cloud import dialogflow_v2 as dialogflow
 import os
