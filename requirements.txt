@@ -2,4 +2,5 @@ streamlit
 dialogflow
 pandas
 requests
-google.cloud
+google-cloud-dialogflow
+
