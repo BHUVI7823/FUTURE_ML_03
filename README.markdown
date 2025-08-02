@@ -23,6 +23,9 @@ The chatbot intents were trained using the **Customer Support Chat Dataset** fro
 ### About the Task
 This internship task focused on building a **Customer Support Chatbot** to automate customer interactions using a no-code platform, applicable to e-commerce, telecom, and service industries.
 
+<img width="1920" height="1080" alt="Screenshot 2025-08-01 223041" src="https://github.com/user-attachments/assets/00b47db4-673f-4e5d-8dbc-42968ac7b6b0" />
+
+
 ### ✅ What I Did
 - Explored and curated customer query data from Kaggle.
 - Designed intents for greetings, FAQs, and fallback responses in Dialogflow.
@@ -41,13 +44,13 @@ This internship task focused on building a **Customer Support Chatbot** to autom
 - **Dialogflow**: No-code platform for chatbot development and testing.
 - **Streamlit**: For optional web app deployment.
 - **Kaggle Dataset**: Customer Support Chat Dataset for intent training.
-- **Python**: For Streamlit app development (optional).
+- **Python**: For Streamlit app development.
 
 ### 📁 Sample Datasets
 - 📚 Customer Support Chat Dataset (Kaggle)
-- 💡 Sample FAQ Questions (provided by internship)
+- 💡 Sample FAQ Questions 
 
 ## Requirements
 - Dialogflow account (free tier) for chatbot setup and testing.
-- Python environment with Streamlit (optional, for web deployment).
+- Python environment with Streamlit.
 - Access to the Customer Support Chat Dataset or similar FAQ data.
