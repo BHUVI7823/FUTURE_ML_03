@@ -1,6 +1,5 @@
 streamlit
-dialogflow
-pandas
-requests
-google-cloud-dialogflow
+google-cloud-dialogflow==2.14.1
+
+
 
