@@ -62,13 +62,13 @@ def set_background(image_path):
             text-shadow: 1px 1px 2px black;
         }}
         @media only screen and (max-width: 600px) {{
-         body {
-        background-image: url("https://your-image-url.com"); /* Replace with actual public image URL */
+        .stApp {{
+        background-image: url("data:image/jpg;base64,{encoded}"); 
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-    }
+    }}
 
             .chat-bubble {{
                 font-size: 14px;
