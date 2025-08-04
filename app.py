@@ -1,27 +1,25 @@
 import streamlit as st
 from google.cloud import dialogflow_v2 as dialogflow
+from google.oauth2 import service_account
 import os
 import base64
 import tempfile
 import json
 import uuid
 
-# Load credentials from Streamlit Secrets
-if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in st.secrets:
-    service_account_info = json.loads(st.secrets["GOOGLE_APPLICATION_CREDENTIALS_JSON"])
-    with tempfile.NamedTemporaryFile(mode="w", delete=False) as f:
-        json.dump(service_account_info, f)
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = f.name
+# --- Load credentials from secrets.toml ---
+if "dialogflow" in st.secrets:
+    credentials = service_account.Credentials.from_service_account_info(st.secrets["dialogflow"])
+    session_client = dialogflow.SessionsClient(credentials=credentials)
 else:
     st.error("Missing Dialogflow credentials in secrets.toml!")
     st.stop()
 
-# Dialogflow setup
-DIALOGFLOW_PROJECT_ID = "customer-support-chatbot-nmaw"
+# --- Dialogflow Configuration ---
+DIALOGFLOW_PROJECT_ID = st.secrets["dialogflow"]["project_id"]
 SESSION_ID = str(uuid.uuid4())
 
 def detect_intent_texts(project_id, session_id, text, language_code='en'):
-    session_client = dialogflow.SessionsClient()
     session = session_client.session_path(project_id, session_id)
 
     text_input = dialogflow.TextInput(text=text, language_code=language_code)
@@ -32,7 +30,7 @@ def detect_intent_texts(project_id, session_id, text, language_code='en'):
     )
     return response.query_result.fulfillment_text
 
-# Set background
+# --- Background Styling ---
 def set_background(image_path):
     with open(image_path, "rb") as img:
         encoded = base64.b64encode(img.read()).decode()
@@ -45,7 +43,6 @@ def set_background(image_path):
             background-position: center;
             background-repeat: no-repeat;
         }}
-
         .chat-bubble {{
             background-color: rgba(255, 255, 255, 0.7);
             padding: 10px 15px;
@@ -77,17 +74,17 @@ def set_background(image_path):
         unsafe_allow_html=True
     )
 
-# Set the background image (Ensure this file is in your GitHub repo)
+# --- Set the background image ---
 set_background("background.jpg")
 
-# Title
+# --- Page Title ---
 st.markdown("<h1>🤖 Customer Support Chatbot</h1>", unsafe_allow_html=True)
 
-# Chat History
+# --- Chat History State ---
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# Chat Form
+# --- Chat Form ---
 with st.form(key="chat_form", clear_on_submit=True):
     user_input = st.text_input("Type your message:")
     submitted = st.form_submit_button("Send")
@@ -98,7 +95,7 @@ if submitted and user_input:
         st.session_state.chat_history.append(("You", user_input))
         st.session_state.chat_history.append(("Bot", response))
 
-# Display messages
+# --- Display Messages ---
 for sender, msg in st.session_state.chat_history:
     css_class = "user-message" if sender == "You" else "bot-message"
     st.markdown(f'<div class="chat-bubble {css_class}"><strong>{sender}:</strong> {msg}</div>', unsafe_allow_html=True)
