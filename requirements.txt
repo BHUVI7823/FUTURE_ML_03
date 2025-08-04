@@ -2,6 +2,8 @@ streamlit
 google-cloud-dialogflow==2.14.1
 google-api-core
 setuptools
+google-auth
+
 
 
 
