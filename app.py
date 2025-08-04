@@ -6,14 +6,15 @@ import tempfile
 import json
 import uuid
 
-# Set credentials from Streamlit secrets or local file
+# Load credentials from Streamlit Secrets
 if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in st.secrets:
     service_account_info = json.loads(st.secrets["GOOGLE_APPLICATION_CREDENTIALS_JSON"])
     with tempfile.NamedTemporaryFile(mode="w", delete=False) as f:
         json.dump(service_account_info, f)
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = f.name
 else:
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service_account.json"
+    st.error("Missing Dialogflow credentials in secrets.toml!")
+    st.stop()
 
 # Dialogflow setup
 DIALOGFLOW_PROJECT_ID = "customer-support-chatbot-nmaw"
@@ -62,7 +63,6 @@ def set_background(image_path):
             color: white;
             text-shadow: 1px 1px 2px black;
         }}
-
         @media only screen and (max-width: 600px) {{
             .chat-bubble {{
                 font-size: 14px;
@@ -77,7 +77,7 @@ def set_background(image_path):
         unsafe_allow_html=True
     )
 
-# Set responsive background
+# Set the background image (Ensure this file is in your GitHub repo)
 set_background("background.jpg")
 
 # Title
