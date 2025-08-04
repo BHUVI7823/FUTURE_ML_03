@@ -40,7 +40,7 @@ def set_background(image_path):
         .stApp {{
             background-image: url("data:image/jpg;base64,{encoded}");
             background-size: cover;
-            background-position: center;
+            background-position: top center;
             background-repeat: no-repeat;
             min-height: 100vh;
             
@@ -66,9 +66,8 @@ def set_background(image_path):
         .stApp {{
         background-image: url("data:image/jpg;base64,{encoded}"); 
         background-size: cover;
-        background-position: center;
+        background-position: top center;
         background-repeat: no-repeat;
-        background-attachment: fixed;
         min-height: 100vh;
         }}
 
