@@ -42,6 +42,7 @@ def set_background(image_path):
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            
         }}
         .chat-bubble {{
             background-color: rgba(255, 255, 255, 0.7);
@@ -57,10 +58,18 @@ def set_background(image_path):
         .bot-message {{ text-align: left; color: #000; }}
         h1 {{
             text-align: center;
-            color: white;
+            color: black;
             text-shadow: 1px 1px 2px black;
         }}
         @media only screen and (max-width: 600px) {{
+         body {
+        background-image: url("https://your-image-url.com"); /* Replace with actual public image URL */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
             .chat-bubble {{
                 font-size: 14px;
                 max-width: 95%;
