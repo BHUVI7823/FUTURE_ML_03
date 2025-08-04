@@ -42,6 +42,7 @@ def set_background(image_path):
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            min-height: 100vh;
             
         }}
         .chat-bubble {{
@@ -68,7 +69,8 @@ def set_background(image_path):
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-    }}
+        min-height: 100vh;
+        }}
 
             .chat-bubble {{
                 font-size: 14px;
